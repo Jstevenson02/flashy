@@ -60,15 +60,17 @@ const GroupDetail = ({ params }: GroupDetailProps) => {
 
   const handleDeleteCardStack = async (stackId: string) => {
     try {
-      if (!groupId) return;
       const response = await fetch(`/api/groups/${groupId}/cardstacks/${stackId}`, {
         method: "DELETE",
       });
+
       if (response.ok) {
         setCardStacks((prevStacks) => prevStacks.filter((stack) => stack.id !== stackId));
+      } else {
+        console.error("Failed to delete card stack:", await response.json());
       }
     } catch (error) {
-      console.error("Failed to delete card stack:", error);
+      console.error("Error deleting card stack:", error);
     }
   };
 

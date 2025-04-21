@@ -69,3 +69,5 @@ export const deleteCardStack = async (stackId: string) => {
     where: { id: Number(stackId) },
   });
 };
+
+export default prisma;
