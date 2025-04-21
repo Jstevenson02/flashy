@@ -103,6 +103,7 @@ const CardsIndex = ({ params }: { params: Promise<{ groupId: string; stackId: st
 
       {/* Card Container */}
       <div
+        onClick={toggleCardFlip} // Flip the card when the container is clicked
         style={{
           width: "300px",
           height: "200px",
@@ -116,6 +117,7 @@ const CardsIndex = ({ params }: { params: Promise<{ groupId: string; stackId: st
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
+          cursor: "pointer", // Indicate that the card is clickable
         }}
       >
         {cards.length > 0 ? (
@@ -132,7 +134,7 @@ const CardsIndex = ({ params }: { params: Promise<{ groupId: string; stackId: st
         {cards.length > 0 && (
           <button
             onClick={(e) => {
-              e.stopPropagation();
+              e.stopPropagation(); // Prevent triggering the flip
               handleDeleteCard(cards[currentCardIndex].id);
             }}
             style={{
@@ -146,6 +148,9 @@ const CardsIndex = ({ params }: { params: Promise<{ groupId: string; stackId: st
               width: "25px",
               height: "25px",
               cursor: "pointer",
+              display: "flex", // Center the content
+              alignItems: "center", // Vertically center
+              justifyContent: "center", // Horizontally cente
             }}
           >
             X
@@ -156,7 +161,7 @@ const CardsIndex = ({ params }: { params: Promise<{ groupId: string; stackId: st
         {currentCardIndex > 0 && (
           <button
             onClick={(e) => {
-              e.stopPropagation();
+              e.stopPropagation(); // Prevent triggering the flip
               handlePreviousCard();
             }}
             style={{
@@ -179,7 +184,7 @@ const CardsIndex = ({ params }: { params: Promise<{ groupId: string; stackId: st
         {cards.length > 0 && (
           <button
             onClick={(e) => {
-              e.stopPropagation();
+              e.stopPropagation(); // Prevent triggering the flip
               toggleCardFlip();
             }}
             style={{
@@ -201,7 +206,7 @@ const CardsIndex = ({ params }: { params: Promise<{ groupId: string; stackId: st
         {currentCardIndex < cards.length - 1 && (
           <button
             onClick={(e) => {
-              e.stopPropagation();
+              e.stopPropagation(); // Prevent triggering the flip
               handleNextCard();
             }}
             style={{
