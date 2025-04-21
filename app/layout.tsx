@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Flashcard App",
+  title: "Flashy",
   description: "A dashboard for creating and managing flashcard groups and cards",
 };
 
