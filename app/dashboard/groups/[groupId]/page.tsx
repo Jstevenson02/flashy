@@ -1,11 +1,13 @@
 "use client";
 
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const GroupDetail = () => {
-  const router = useRouter();
-  const { groupId } = router.query;
+interface GroupDetailProps {
+  params: { groupId: string };
+}
+
+const GroupDetail = ({ params }: GroupDetailProps) => {
+  const { groupId } = params;
   const [cardStacks, setCardStacks] = useState<{ id: string; name: string }[]>([]);
 
   useEffect(() => {
