@@ -36,6 +36,12 @@ export const getCardStacksByGroupId = async (groupId: string) => {
   });
 };
 
+export const getCardsByStackId = async (stackId: string) => {
+  return await prisma.card.findMany({
+    where: { stackId: Number(stackId) },
+  });
+};
+
 export const createCard = async (stackId: string, frontText: string, backText: string) => {
   return await prisma.card.create({
     data: {
@@ -46,8 +52,14 @@ export const createCard = async (stackId: string, frontText: string, backText: s
   });
 };
 
-export const getCardsByStackId = async (stackId: string) => {
-  return await prisma.card.findMany({
-    where: { stackId: Number(stackId) },
+export const deleteCard = async (cardId: string) => {
+  return await prisma.card.delete({
+    where: { id: Number(cardId) },
+  });
+};
+
+export const deleteCardStack = async (stackId: string) => {
+  return await prisma.cardStack.delete({
+    where: { id: Number(stackId) },
   });
 };
