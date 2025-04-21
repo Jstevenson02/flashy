@@ -60,7 +60,7 @@ const Dashboard = () => {
         boxSizing: "border-box", // Ensure padding doesn't affect height
       }}
     >
-      <h1 style={{ marginBottom: "20px", fontSize: "2rem", color: "#333" }}>Flashcard Groups</h1>
+      <h1 style={{ marginBottom: "20px", fontSize: "2rem", color: "#333" }}>Flashy Groups</h1>
 
       {/* Input for New Group Name */}
       <div style={{ marginBottom: "20px", display: "flex", alignItems: "center" }}>

@@ -1,21 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import { useRouter } from "next/navigation";
 
 interface GroupDetailProps {
   params: { groupId: string } | Promise<{ groupId: string }>;
 }
 
 const GroupDetail = ({ params }: GroupDetailProps) => {
-  const router = useRouter(); // Initialize the router for navigation
+  const router = useRouter();
   const [groupId, setGroupId] = useState<string | null>(null);
+  const [groupName, setGroupName] = useState<string | null>(null); // State for group name
   const [cardStacks, setCardStacks] = useState<{ id: string; name: string }[]>([]);
-  const [newStackName, setNewStackName] = useState(""); // State for new card stack name
+  const [newStackName, setNewStackName] = useState("");
 
   useEffect(() => {
     const unwrapParams = async () => {
-      const resolvedParams = await params; // Unwrap the Promise if needed
+      const resolvedParams = await params;
       setGroupId(resolvedParams.groupId);
     };
 
@@ -23,19 +24,20 @@ const GroupDetail = ({ params }: GroupDetailProps) => {
   }, [params]);
 
   useEffect(() => {
-    const fetchCardStacks = async () => {
+    const fetchGroupDetails = async () => {
       if (groupId) {
         try {
-          const response = await fetch(`/api/groups/${groupId}/cardstacks`);
+          const response = await fetch(`/api/groups/${groupId}`);
           const data = await response.json();
-          setCardStacks(data);
+          setGroupName(data.name); // Set the group name
+          setCardStacks(data.cardStacks); // Set the card stacks
         } catch (error) {
-          console.error("Failed to fetch card stacks:", error);
+          console.error("Failed to fetch group details:", error);
         }
       }
     };
 
-    fetchCardStacks();
+    fetchGroupDetails();
   }, [groupId]);
 
   const handleCreateCardStack = async () => {
@@ -51,7 +53,7 @@ const GroupDetail = ({ params }: GroupDetailProps) => {
       if (response.ok) {
         const newStack = await response.json();
         setCardStacks((prevStacks) => [...prevStacks, newStack]);
-        setNewStackName(""); // Clear the input field
+        setNewStackName("");
       }
     } catch (error) {
       console.error("Failed to create card stack:", error);
@@ -81,17 +83,17 @@ const GroupDetail = ({ params }: GroupDetailProps) => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh", // Ensure the container takes up the full viewport height
-        margin: 0, // Remove any default margins
+        height: "100vh",
+        margin: 0,
         textAlign: "center",
-        overflow: "hidden", // Prevent scrolling
+        overflow: "hidden",
       }}
     >
       {/* Back Button */}
       <button
-        onClick={() => router.back()} // Navigate back to the previous page
+        onClick={() => router.back()}
         style={{
-          position: "fixed", // Keep the button fixed in place
+          position: "fixed",
           top: "10px",
           left: "10px",
           background: "blue",
@@ -105,7 +107,8 @@ const GroupDetail = ({ params }: GroupDetailProps) => {
         Back
       </button>
 
-      <h1 style={{ marginBottom: "20px" }}>Group: {groupId || "Loading..."}</h1>
+      {/* Display Group Name and ID */}
+      <h1 style={{ marginBottom: "20px" }}>{groupName || "Loading..."}</h1>
 
       {/* Input for New Card Stack Name */}
       <div style={{ marginBottom: "20px" }}>
@@ -144,9 +147,9 @@ const GroupDetail = ({ params }: GroupDetailProps) => {
           <li
             key={stack.id}
             style={{
-              display: "flex", // Use flexbox to align items horizontally
+              display: "flex",
               alignItems: "center",
-              justifyContent: "space-between", // Space between the name and the delete button
+              justifyContent: "space-between",
               marginBottom: "10px",
               padding: "10px",
               border: "1px solid #ccc",
@@ -162,7 +165,7 @@ const GroupDetail = ({ params }: GroupDetailProps) => {
                 textDecoration: "none",
                 color: "blue",
                 fontWeight: "bold",
-                flex: 1, // Allow the name to take up available space
+                flex: 1,
               }}
             >
               {stack.name}
