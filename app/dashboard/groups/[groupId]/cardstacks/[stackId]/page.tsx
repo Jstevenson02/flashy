@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"; // Import useRouter for navigation
 
 interface Card {
   id: string;
@@ -8,9 +9,15 @@ interface Card {
   backText: string;
 }
 
-const CardsIndex = ({ params }: { params: Promise<{ groupId: string; stackId: string }> }) => {
+const CardsIndex = ({
+  params,
+}: {
+  params: Promise<{ groupId: string; stackId: string; stackName: string }>;
+}) => {
+  const router = useRouter(); // Initialize the router for navigation
   const [groupId, setGroupId] = useState<string | null>(null);
   const [stackId, setStackId] = useState<string | null>(null);
+  const [stackName, setStackName] = useState<string | null>(null); // Store stackName
   const [cards, setCards] = useState<Card[]>([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0); // Track the current card index
   const [isFlipped, setIsFlipped] = useState(false); // Track whether the current card is flipped
@@ -22,6 +29,7 @@ const CardsIndex = ({ params }: { params: Promise<{ groupId: string; stackId: st
       const resolvedParams = await params;
       setGroupId(resolvedParams.groupId);
       setStackId(resolvedParams.stackId);
+      setStackName(resolvedParams.stackName); // Set stackName from params
     };
 
     unwrapParams();
@@ -99,7 +107,27 @@ const CardsIndex = ({ params }: { params: Promise<{ groupId: string; stackId: st
 
   return (
     <div style={{ textAlign: "center", marginTop: "20px" }}>
-      <h1>Cards in Stack {stackId || "Loading..."}</h1>
+      {/* Back Button */}
+      <button
+        onClick={() => router.back()} // Navigate back to the previous page
+        style={{
+          position: "absolute",
+          top: "10px",
+          left: "10px",
+          background: "blue",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          padding: "5px 10px",
+          cursor: "pointer",
+        }}
+      >
+        Back
+      </button>
+
+      <h1>
+        {stackName || "Loading..."} (Stack ID: {stackId || "Loading..."})
+      </h1>
 
       {/* Card Container */}
       <div
@@ -150,7 +178,7 @@ const CardsIndex = ({ params }: { params: Promise<{ groupId: string; stackId: st
               cursor: "pointer",
               display: "flex", // Center the content
               alignItems: "center", // Vertically center
-              justifyContent: "center", // Horizontally cente
+              justifyContent: "center", // Horizontally center
             }}
           >
             X

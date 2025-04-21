@@ -59,6 +59,12 @@ export const deleteCard = async (cardId: string) => {
 };
 
 export const deleteCardStack = async (stackId: string) => {
+  // Delete related cards first
+  await prisma.card.deleteMany({
+    where: { stackId: Number(stackId) },
+  });
+
+  // Then delete the card stack
   return await prisma.cardStack.delete({
     where: { id: Number(stackId) },
   });
